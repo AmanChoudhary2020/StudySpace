@@ -1,2 +1,4 @@
 env/
 studyspace.egg-info/
+studyspace/__pycache__/
+studyspace/views/__pycache__/
