@@ -1,7 +1,9 @@
 from typing import Tuple
 from flask import Flask
+import numpy as np
 import datetime
 
+# TODO - list
 LOCATIONS = [
     "Union",
     "UGLI"
@@ -17,16 +19,28 @@ def get_device_location(ping) -> int:
     lat, long = get_device_latlong(ping)
     # TODO - implement
 
+def time_dropoff(dt : datetime.datetime) -> float:
+    MIN_TIME = 20
+    MAX_TIME = 120
+
+    cur_dt = datetime.datetime.now()
+    time_diff = (cur_dt - dt).total_seconds() / 60
+    return np.clip(1 - (time_diff - MIN_TIME) / MAX_TIME, 0, 1)
+
 class Analysis:
     """
     self.pings     : List[Ping]
     self.density   : List[int]
         # density[location_idx] = number of connected devices connected at location
-    self.processed : bool
     self.ratings   : List[List[datetime, int, int]] 
         # row = [datetime, location_idx, rating])
+    self.processed : bool
     self.state     : int
         # STATE_NORMAL or STATE_ERROR
+
+    # TODO - move to database
+    self.scores
+    self.ratings
     """
     STATE_NORMAL = 0
     STATE_ERROR  = 1
@@ -35,8 +49,10 @@ class Analysis:
         self.pings     = []
         self.density   = [0] * LOCATIONS
         self.processed = True
-        self.ratings   = []
         self.state     = Analysis.STATE_ERROR
+
+        self.ratings   = []
+        self.scores    = [-1] * LOCATIONS 
 
     def update(self, pings):
         """
@@ -48,8 +64,12 @@ class Analysis:
 
     def score(self, location):
         """
-        Produces a score
+        Gets busyness score for given location
         """
+        COEFF_CROWDSOURCE = 1
+        COEFF_DEVICES     = 1
+
+        # TODO - implement
 
     def process(self):
         """
@@ -69,4 +89,4 @@ class Analysis:
         """
         Called by front end whenever a user rates a location
         """
-        self.ratings.append([datetime.now(), location, rating])
+        self.ratings.append([datetime.datetime.now(), location, rating])
