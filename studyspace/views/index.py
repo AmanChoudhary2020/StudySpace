@@ -8,6 +8,7 @@ def show_index():
     return flask.render_template("index.html", **context)
 
 
+# this is where ping.py will hit and analysis.py will get triggered
 @studyspace.app.route('/api/update_connections/', methods=['POST'])
 def update_connections():
     result = {"status": "success"}
