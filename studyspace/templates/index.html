@@ -78,9 +78,14 @@
     <nav>
         <div class="nav-wrapper blue darken-4">
             <a href="#" class="brand-logo" style="margin-left: 50px;">MSpace</a>
-
-            <img style="margin-top: 15px; margin-left: 1300px;" height="40px"
+            <ul id="nav-mobile" class="hide-on-med-and-down" style="margin-left: 15%;">
+                <li><a href="#">How It Works</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+            <img style="margin-top: 15px; margin-left: 800px;" height="40px"
                 src="https://www.pngkit.com/png/full/846-8468310_activities-office-of-sustainability-books-banner-png.png">
+            
         </div>
     </nav>
 
@@ -103,12 +108,12 @@
                                 <b>{{ location.name }}</b><br>
                                 <div style="font-size: 12px; margin-top: 1px; width: 100%">
 
-                                    <div style="width: 30%; height: 100px; float: left;"> 
+                                    <div style="width: 30%; height: 100px; float: left;">
                                         {{ location.capacity }}/5
                                     </div>
-                                    <div style="margin-left: 75%; height: 100px;"> 
+                                    <div style="margin-left: 75%; height: 100px;">
                                         <img src="https://static.thenounproject.com/png/2155111-200.png" width="70px"
-                                        height="70px" style="margin-top: -25px;">
+                                            height="70px" style="margin-top: -25px;">
                                     </div>
 
                                 </div>
@@ -147,7 +152,7 @@
             heatmap = new google.maps.visualization.HeatmapLayer({
                 data: getPoints(),
                 map: map,
-                maxIntensity: 30,
+                maxIntensity: 0.2,
                 radius: 50
             });
         }
@@ -155,16 +160,16 @@
         // Heatmap data: 500 Points
         function getPoints() {
             return [
-                { location: new google.maps.LatLng(42.275805, -83.737242), weight: 20 },
-                { location: new google.maps.LatLng(42.276009, -83.738151), weight: 30 },
-                { location: new google.maps.LatLng(42.275140, -83.741265), weight: 25 },
-                { location: new google.maps.LatLng(42.276032, -83.741220), weight: 10 },
-                { location: new google.maps.LatLng(42.279016, -83.737376), weight: 8 },
-                { location: new google.maps.LatLng(42.276310, -83.739394), weight: 7 },
-                { location: new google.maps.LatLng(42.277043, -83.739677), weight: 7 },
-                { location: new google.maps.LatLng(42.272410, -83.737160), weight: 7 },
-                { location: new google.maps.LatLng(42.268983, -83.742080), weight: 5 },
-                { location: new google.maps.LatLng(42.277948, -83.738705), weight: 20 },
+                { location: new google.maps.LatLng(42.275805, -83.737242), weight: 5 },
+                { location: new google.maps.LatLng(42.276009, -83.738151), weight: 5 },
+                { location: new google.maps.LatLng(42.275140, -83.741265), weight: 5 },
+                { location: new google.maps.LatLng(42.276032, -83.741220), weight: 15 },
+                { location: new google.maps.LatLng(42.279016, -83.737376), weight: 15 },
+                { location: new google.maps.LatLng(42.276310, -83.739394), weight: 15 },
+                { location: new google.maps.LatLng(42.277043, -83.739677), weight: 10 },
+                { location: new google.maps.LatLng(42.272410, -83.737160), weight: 20 },
+                { location: new google.maps.LatLng(42.268983, -83.742080), weight: 20 },
+                { location: new google.maps.LatLng(42.277948, -83.738705), weight: 5 },
             ];
         }
 
