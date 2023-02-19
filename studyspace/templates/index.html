@@ -147,22 +147,24 @@
             heatmap = new google.maps.visualization.HeatmapLayer({
                 data: getPoints(),
                 map: map,
+                maxIntensity: 30,
+                radius: 50
             });
         }
 
         // Heatmap data: 500 Points
         function getPoints() {
             return [
-                { location: new google.maps.LatLng(42.277300, -83.738229), weight: 0.5 },
-                { location: new google.maps.LatLng(42.277300, -83.738229), weight: 2 },
-                { location: new google.maps.LatLng(42.277300, -83.738229), weight: 3 },
-                { location: new google.maps.LatLng(42.277300, -83.738229), weight: 2 },
-                { location: new google.maps.LatLng(42.277043, -83.739677), weight: 0.5 },
-                { location: new google.maps.LatLng(42.277043, -83.739677), weight: 3 },
-                { location: new google.maps.LatLng(42.277043, -83.739677), weight: 2 },
-                { location: new google.maps.LatLng(42.277043, -83.739677), weight: 0.5 },
-                { location: new google.maps.LatLng(42.277043, -83.739677), weight: 2 },
-                { location: new google.maps.LatLng(42.277043, -83.739677), weight: 3 }
+                { location: new google.maps.LatLng(42.275805, -83.737242), weight: 20 },
+                { location: new google.maps.LatLng(42.276009, -83.738151), weight: 30 },
+                { location: new google.maps.LatLng(42.275140, -83.741265), weight: 25 },
+                { location: new google.maps.LatLng(42.276032, -83.741220), weight: 10 },
+                { location: new google.maps.LatLng(42.279016, -83.737376), weight: 8 },
+                { location: new google.maps.LatLng(42.276310, -83.739394), weight: 7 },
+                { location: new google.maps.LatLng(42.277043, -83.739677), weight: 7 },
+                { location: new google.maps.LatLng(42.272410, -83.737160), weight: 7 },
+                { location: new google.maps.LatLng(42.268983, -83.742080), weight: 5 },
+                { location: new google.maps.LatLng(42.277948, -83.738705), weight: 20 },
             ];
         }
 
