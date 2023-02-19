@@ -62,14 +62,14 @@ class Analysis:
 
     def __init__(self):
         self.pings     = []
-        self.density   = [0] * LOCATIONS
 
         self.processed = True
         self.state     = Analysis.STATE_EMPTY
         self.tick      = 0
 
-        self.ratings   = []
-        self.scores    = [-1] * LOCATIONS 
+        self.ratings   = np.array([])
+        self.density   = np.zeros((1,len(LOCATIONS)))
+        self.scores    = np.zeros(len(LOCATIONS))
 
     def update(self, pings, error=False):
         """
@@ -80,7 +80,6 @@ class Analysis:
             self.tick  += 1
             return
 
-        # TODO - add handling for Error state
         self.pings     = pings
         self.processed = False
         self.state     = Analysis.STATE_NORMAL
@@ -92,8 +91,8 @@ class Analysis:
         """
         COEFF_CROWDSOURCE = 1
         COEFF_DEVICES     = 0
-
-        # TODO - implement
+        # TODO - factor in rating
+        # TODO - tune hyperparameters
 
     def process(self):
         """
@@ -118,9 +117,11 @@ class Analysis:
         """
         Called by front end whenever a user rates a location
         """
+        if not isinstance(rating, int) or rating < 1 or rating > 5:
+            return
+
         # TODO - convert location to location_idx
-        # TODO - verify score is from 1 to 5
-        self.ratings.append([datetime.datetime.now(), location, rating])
+        np.append(self.ratings, [[datetime.datetime.now(), location, rating]], axis=0)
         self.tick += 1
         self.processed = False
 
