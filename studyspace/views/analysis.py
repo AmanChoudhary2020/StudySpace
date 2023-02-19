@@ -1,6 +1,10 @@
 from typing import Tuple
 import numpy as np
 import datetime
+import urllib.request
+import json
+from geopy.geocoders import Nominatim
+import random
 
 """
 USAGE
@@ -15,32 +19,35 @@ Site should periodically refresh to see if the scores have changed:
 4. call Analysis.get_location_scores()
 """
 
-# TODO - list out all locations
+API_KEY = "f829251927f392ec48f72dc2c8098c6a"
+MODE    = 0
 LOCATIONS = [
+    "UgLi",
+    "Hatcher",
     "Union",
-    "UGLI"
+    "LSA",
+    "League",
+    "Fishbowl",
+    "Ross",
+    "IM"
 ]
 
-def get_device_id(ping) -> int:
-    pass
-
 def get_device_latlong(ping) -> Tuple[int, int]:
-    pass
+    route      = urllib.request.urlopen(f"http://api.ipapi.com/api/{ping}?access_key={API_KEY}").read().decode("utf-8")
+    route_dict = json.loads(route) 
+    lat        = route_dict["latitude"]
+    lon        = route_dict["longitude"]
+    return lat, lon
 
 def get_device_location(ping) -> int:
-    lat, long = get_device_latlong(ping)
-    # TODO - implement
-
-def time_dropoff(dt : datetime.datetime) -> float:
-    """
-    Determines strength to downgrade importance of crowdsourced score by elapsed time
-    """
-    MIN_TIME = 20
-    MAX_TIME = 120
-
-    cur_dt = datetime.datetime.now()
-    time_diff = (cur_dt - dt).total_seconds() / 60
-    return np.clip(1 - (time_diff - MIN_TIME) / MAX_TIME, 0, 1)
+    if MODE == 1:
+        lat, lon = get_device_latlong(ping)
+        locator = Nominatim(user_agent="myGeocoder")
+        coordinates = f"{lat}, {lon}"
+        location = locator.reverse(coordinates)
+        return location.raw["address"]["building"]
+    else:
+        return random.randint(0, len(LOCATIONS)-1)
 
 class Analysis:
     """
@@ -52,7 +59,6 @@ class Analysis:
     self.tick      : int
     self.state     : int                              # STATE_NORMAL or STATE_ERROR
 
-    # TODO - move to database
     self.scores
     self.ratings
     """
@@ -89,10 +95,8 @@ class Analysis:
         """
         Gets busyness score for given location
         """
-        COEFF_CROWDSOURCE = 1
-        COEFF_DEVICES     = 0
-        # TODO - factor in rating
-        # TODO - tune hyperparameters
+        # TODO - connect to Sachin's
+        return 1
 
     def process(self):
         """
@@ -100,11 +104,10 @@ class Analysis:
         """
         devices = set()
         for ping in self.pings:
-            did = get_device_id(ping)
-            if did in devices:
+            if ping in devices:
                 continue
             else:
-                devices.add(did)
+                devices.add(ping)
 
             self.density[get_device_location(ping)] += 1
 
@@ -120,7 +123,6 @@ class Analysis:
         if not isinstance(rating, int) or rating < 1 or rating > 5:
             return
 
-        # TODO - convert location to location_idx
         np.append(self.ratings, [[datetime.datetime.now(), location, rating]], axis=0)
         self.tick += 1
         self.processed = False
